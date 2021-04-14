@@ -18,4 +18,8 @@ public class Controller1 {
     public String java(){
         return "java.html";
     }
+    @GetMapping("*")
+    public String NotFound(){
+        return "index.html";
+    }
 }
