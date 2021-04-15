@@ -56,7 +56,11 @@
     margin: 20px;
     margin-left: 30px;
 }
-a{
+#a1{
+    color: #000;
+    text-decoration: none;
+}
+#b1{
     color: #000;
     text-decoration: none;
 }
