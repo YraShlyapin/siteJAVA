@@ -12,7 +12,7 @@ public class Colcul {
     }
     public Integer answer(){
         Integer answer=0;
-        if (c=='+'){
+        if (c=='p'){
             answer=a+b;
         }else if (c=='-'){
             answer=a-b;
@@ -20,7 +20,7 @@ public class Colcul {
             answer=a/b;
         }else if (c=='*'){
             answer=a*b;
-        }else if (c=='%'){
+        }else if (c=='o'){
             answer=a%b;
         }
         return answer;
