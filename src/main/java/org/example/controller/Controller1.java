@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.lang.reflect.Member;
+import java.util.ArrayList;
+import java.util.Map;
 
 
 @Controller
@@ -40,19 +42,49 @@ public class Controller1 {
     }
     @GetMapping("/colcul")
     public String colcul(Model model,
-                         @RequestParam(value = "a",required = false)Integer a,
-                         @RequestParam(value = "b",required = false)Integer b,
-                         @RequestParam(value = "c",required = false)Character c){
+                         @RequestParam(value = "a",required = false, defaultValue = "0")Integer a,
+                         @RequestParam(value = "b",required = false, defaultValue = "0")Integer b,
+                         @RequestParam(value = "c",required = false, defaultValue = "p")Character c){
         Colcul colcul = new Colcul(a,b,c);
         if (c=='p'){
             c='+';
-        }
-        if (c=='o'){
+        }else if (c=='o'){
             c='%';
         }
+
         String answer = a+""+c.toString()+""+b+"="+colcul.answer();
 
         model.addAttribute("answer",answer);
         return "colcul";
+    }
+    @GetMapping("/pizza")
+    public String pizza(){
+        return "pizza";
+    }
+
+    @PostMapping
+    public String add(@RequestParam String name, @RequestParam String surname, @RequestParam String patronymic, @RequestParam String Pizza, @RequestParam Boolean isAcute, Model model){
+        Pizza pizza = new Pizza(name,surname,patronymic,Pizza,isAcute);
+        ArrayList<Pizza> pizzas = new ArrayList<>();
+        pizzas.add(pizza);
+        model.addAttribute("piz",pizzas);
+
+        return "pizza";
+    }
+}
+class Pizza{
+    String name;
+    String surname;
+    String patronymic;
+    String pizza;
+    Boolean isAcute;
+
+    public Pizza(String name, String surname, String patronymic, String pizza, Boolean isAcute) {
+        this.name = name;
+        this.surname = surname;
+        this.patronymic = patronymic;
+        this.pizza = pizza;
+        this.isAcute = isAcute;
+
     }
 }
