@@ -58,7 +58,19 @@ public class Controller1 {
         return "colcul";
     }
     @GetMapping("/pizza")
-    public String pizza(){
+    public String pizza(Model model,
+                        @RequestParam(value = "name",required = false, defaultValue = "name") String a,
+                        @RequestParam(value = "a",required = false,defaultValue = "surname")String b,
+                        @RequestParam(value = "c",required = false,defaultValue = "true")Boolean c){
+        String isAcute;
+        if (c){
+            isAcute="острая";
+        }else {
+            isAcute="обычная";
+        }
+        model.addAttribute("name",a);
+        model.addAttribute("surname",b);
+        model.addAttribute("c",isAcute);
         return "pizza";
     }
 
