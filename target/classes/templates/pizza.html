@@ -5,48 +5,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Юху закажите свою пицу</title>
-<script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=vZSCDTz5tVGXYCOWwZ3OnQRVYIGhAsKeWfRZhuKhBWZV27m8yiFz3V3auz1iUMdFpRljtMS9L2rXzBVDWxvU8kPQW3PV-UGxNosDUx0aw4LVuX1ht8vEWMXYXAhyeW3sdwcHTh3CfoC4tJdl69ekntO-LHVYNj7xjJwAA2A2IEIhWsIiUYZIB9KPwI3jVDxcZWaxmxnqJPKfPUbQ1hpz0Fk-5As_SLfLACoxy7kzDYN4ceY5ERSn1EmEXdjc4ndU-ILKmXnJxVI8p59ZDUN5pyGrJJxTvgnOUTQK2uGHzpENuizp4HAX7gmT0-uq7UnUQdHEK_lcNKRBklCY62tMam8CIT9bDvar56LcXMC_Iycxch1J7Ykg_ukvN-uVF0oSPKAdK9dcdDq2LgNkB8h9DvJwOvHEmXwait6tyrczXCAn8EhFF3SVRR0UCqaeHUO8ZIUaN956f8PHLjUVuprgYw" charset="UTF-8"></script></head>
 <body>
 <div id="center">
     <div id="yellowFon">
-    <h1>заказ пиццы</h1>
-    <form id="vertical">
-        <p>ведите имя</p>
-        <input type="text"><br>
-        <p>ведите фамилию</p>
-        <input type="text" class="inp"><br>
-        <p>ведите отчество</p>
-        <input type="text" class="inp inp1">
-    </form>
-    <form>
-    <select>
-        <option>пицца корбанара</option>
-        <option>пицца пеперони</option>
-        <option>пицца цезарь</option>
-    </select>
-    </form>
-    <div id="gorizont">
-        <p>острая</p>
-        <input type="checkbox">
-    </div>
-    <button th:method="post">заказать</button>
+        <h1>заказ пиццы</h1>
+        <form id="vertical" method="post" action="/abr">
+            <div>
+                <p>ведите имя</p>
+                <input type="text" name="a"><br>
+                <p>ведите фамилию</p>
+                <input type="text" class="inp" name="b"><br>
+                <p>ведите отчество</p>
+                <input type="text" class="inp inp1" name="c">
+            </div>
+
+            <select name="d">
+                <option>пицца корбанара</option>
+                <option>пицца пеперони</option>
+                <option>пицца цезарь</option>
+            </select>
+            <div id="gorizont">
+                <p>острая</p>
+                <input type="checkbox" name="e">
+            </div>
+            <input type="submit" value="заказать">
+        </form>
     </div>
 </div>
-<!--<div class="yellowFonZakaz">-->
-<!--    <p class="zakaz">Юрий</p>-->
-<!--    <p class="zakaz">Шляпин</p>-->
+<table>
+    <tr th:each="zakaz1 : ${zakazs}">
+        <td th:text="${zakaz1}"></td>
+    </tr>
+</table>
+<div class="yellowFonZakaz">
+
+<!--    <p th:text="${name}" class="zakaz"></p>-->
+<!--    <p th:text="${surname}" class="zakaz">Шляпин</p>-->
 <!--    <p class="zakaz">Александрович</p>-->
 <!--    <p class="zakaz">пицца корбанара</p>-->
-<!--    <p class="zakaz">острая</p>-->
-<!--</div>-->
-<div class="yellowFonZakaz">
-    <p th:text="${name}" class="zakaz"></p>
-    <p th:text="${surname}" class="zakaz">Шляпин</p>
-    <p class="zakaz">Александрович</p>
-    <p class="zakaz">пицца корбанара</p>
-    <p th:text="${c}" class="zakaz"></p>
+<!--    <p th:text="${c}" class="zakaz"></p>-->
 </div>
-    <img src="https://habrastorage.org/getpro/habr/post_images/822/fcc/d9a/822fccd9a214266b046851374d588465.jpg" id="back">
+<img src="https://habrastorage.org/getpro/habr/post_images/822/fcc/d9a/822fccd9a214266b046851374d588465.jpg" id="back">
 </body>
 <style>
 .zakaz{

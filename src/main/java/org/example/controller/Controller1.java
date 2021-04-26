@@ -5,16 +5,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.lang.reflect.Member;
 import java.util.ArrayList;
-import java.util.Map;
 
 
 @Controller
 public class Controller1 {
+
+    ArrayList<Zakaz> zakazs = new ArrayList<>();
+
     @GetMapping("/")
     public String home(){
         return "index";
@@ -71,32 +71,52 @@ public class Controller1 {
         model.addAttribute("name",a);
         model.addAttribute("surname",b);
         model.addAttribute("c",isAcute);
+        model.addAttribute("zakazs",zakazs);
         return "pizza";
     }
 
-    @PostMapping
-    public String add(@RequestParam String name, @RequestParam String surname, @RequestParam String patronymic, @RequestParam String Pizza, @RequestParam Boolean isAcute, Model model){
-        Pizza pizza = new Pizza(name,surname,patronymic,Pizza,isAcute);
-        ArrayList<Pizza> pizzas = new ArrayList<>();
-        pizzas.add(pizza);
-        model.addAttribute("piz",pizzas);
-
-        return "pizza";
+    @PostMapping("/abr")
+    public String man(@RequestParam(value = "a",required = false,defaultValue = "неуказано") String a,
+                      @RequestParam(value = "b",required = false,defaultValue = "неуказано") String b,
+                      @RequestParam(value = "c",required = false,defaultValue = "неуказано") String c,
+                      @RequestParam(value = "d",required = false) String d,
+                      @RequestParam(value = "e",required = false,defaultValue = "false") Boolean e){
+        System.out.println(a);
+        System.out.println(b);
+        System.out.println(c);
+        System.out.println(d);
+        System.out.println(e);
+        Zakaz zakaz = new Zakaz(a,b,c,d,e);
+        zakazs.add(zakaz);
+        for(Zakaz z:zakazs){
+            System.out.println(z);
+        }
+        return "redirect:/pizza";
     }
 }
-class Pizza{
-    String name;
-    String surname;
-    String patronymic;
-    String pizza;
-    Boolean isAcute;
+class Zakaz {
+    String a;
+    String b;
+    String c;
+    String d;
+    Boolean e;
 
-    public Pizza(String name, String surname, String patronymic, String pizza, Boolean isAcute) {
-        this.name = name;
-        this.surname = surname;
-        this.patronymic = patronymic;
-        this.pizza = pizza;
-        this.isAcute = isAcute;
+    public Zakaz(String a, String b, String c, String d, Boolean e) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
+        this.d = d;
+        this.e = e;
+    }
 
+    @Override
+    public String toString() {
+        return "Zakaz{" +
+                "a='" + a + '\'' +
+                ", b='" + b + '\'' +
+                ", c='" + c + '\'' +
+                ", d='" + d + '\'' +
+                ", e=" + e +
+                '}';
     }
 }
