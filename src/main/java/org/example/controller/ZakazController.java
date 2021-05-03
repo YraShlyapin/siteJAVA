@@ -1,19 +1,22 @@
 package org.example.controller;
 
 import org.example.logick.Colcul;
+import org.example.logick.Zakaz;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.ArrayList;
 
 
 @Controller
-public class Controller1 {
+public class ZakazController{
 
     ArrayList<Zakaz> zakazs = new ArrayList<>();
+    ArrayList<Zakaz> filterZakazs = new ArrayList<>();
+    int i = 0;
+    int number=0;
 
     @GetMapping("/")
     public String home(){
@@ -58,65 +61,154 @@ public class Controller1 {
         return "colcul";
     }
     @GetMapping("/pizza")
-    public String pizza(Model model,
-                        @RequestParam(value = "name",required = false, defaultValue = "name") String a,
-                        @RequestParam(value = "a",required = false,defaultValue = "surname")String b,
-                        @RequestParam(value = "c",required = false,defaultValue = "true")Boolean c){
-        String isAcute;
-        if (c){
-            isAcute="острая";
-        }else {
-            isAcute="обычная";
-        }
-        model.addAttribute("name",a);
-        model.addAttribute("surname",b);
-        model.addAttribute("c",isAcute);
+    public String pizza(Model model){
         model.addAttribute("zakazs",zakazs);
         return "pizza";
     }
 
-    @PostMapping("/abr")
-    public String man(@RequestParam(value = "a",required = false,defaultValue = "неуказано") String a,
-                      @RequestParam(value = "b",required = false,defaultValue = "неуказано") String b,
-                      @RequestParam(value = "c",required = false,defaultValue = "неуказано") String c,
-                      @RequestParam(value = "d",required = false) String d,
-                      @RequestParam(value = "e",required = false,defaultValue = "false") Boolean e){
-        System.out.println(a);
-        System.out.println(b);
-        System.out.println(c);
-        System.out.println(d);
-        System.out.println(e);
-        Zakaz zakaz = new Zakaz(a,b,c,d,e);
-        zakazs.add(zakaz);
-        for(Zakaz z:zakazs){
-            System.out.println(z);
+
+    @GetMapping("/pizzaEditing")
+    public String pizzaEditing(Model model){
+        model.addAttribute("zakazs",zakazs);
+        model.addAttribute("number",number);
+        String acut = "";
+        if (zakazs.get(number).isAcute=="острая"){
+            acut="checked";
         }
+        model.addAttribute("acut",acut);
+        return "pizzaEdit";
+    }
+
+    @GetMapping("/pizzaFilter")
+    public String pizzaFilter(Model model){
+        model.addAttribute("zakaz",filterZakazs);
+        return "pizzaFilter";
+    }
+
+    @PostMapping("/filter")
+    public String filter(){
+        filterZakazs=new ArrayList<>();
+        return "redirect:/pizzaFilter";
+    }
+
+    @PostMapping("/filtPizza")
+    public String filtPizza(@RequestParam(value = "name",required = false) String name,
+                            @RequestParam(value = "surname",required = false) String surname,
+                            @RequestParam(value = "patronymic",required = false) String patronymic,
+                            @RequestParam(value = "pizzaType",required = false) String pizzaType,
+                            @RequestParam(value = "isAcute",required = false,defaultValue = "false") Boolean isAcute){
+        if (name!=null){
+            for (Zakaz z:zakazs){
+                if (z.name.equals(name)){
+                    filterZakazs.add(z);
+                }
+            }
+        }
+        if (surname!=null){
+            for (Zakaz z:zakazs){
+                if (z.surname.equals(surname)){
+                    filterZakazs.add(z);
+                }
+            }
+        }
+        if (patronymic!=null){
+            for (Zakaz z:zakazs){
+                if (z.patronymic.equals(patronymic)){
+                    filterZakazs.add(z);
+                }
+            }
+        }
+        if (pizzaType!=null){
+            for (Zakaz z:zakazs){
+                if (z.pizzaType.equals(pizzaType)){
+                    filterZakazs.add(z);
+                }
+            }
+        }
+        String acut="";
+        if (isAcute){
+            acut="острая";
+        }else {
+            acut="обычная";
+        }
+        if (acut!=null){
+            for (Zakaz z:zakazs){
+                if (z.isAcute.equals(acut)){
+                    filterZakazs.add(z);
+                }
+            }
+        }
+        return "redirect:/pizzaFilter";
+    }
+
+    @PostMapping("/obrPizzaEditing")
+    public String obrPizzaEditing(@RequestParam String as){
+        number=Integer.parseInt(as);
+        return "redirect:/pizzaEditing";
+    }
+
+    @PostMapping("/EditPizza")
+    public String EditPizza(@RequestParam(value = "name",required = false,defaultValue = "неуказано") String name,
+                            @RequestParam(value = "surname",required = false,defaultValue = "неуказано") String surname,
+                            @RequestParam(value = "patronymic",required = false,defaultValue = "неуказано") String patronymic,
+                            @RequestParam(value = "pizzaType",required = false) String pizzaType,
+                            @RequestParam(value = "isAcute",required = false,defaultValue = "false") Boolean isAcute){
+        String acut = "";
+        if (isAcute){
+            acut="острая";
+        }else {
+            acut="обычная";
+        }
+        Zakaz zakaz = new Zakaz(name,surname,patronymic,pizzaType,acut,number);
+        zakazs.set(number,zakaz);
         return "redirect:/pizza";
     }
-}
-class Zakaz {
-    String a;
-    String b;
-    String c;
-    String d;
-    Boolean e;
 
-    public Zakaz(String a, String b, String c, String d, Boolean e) {
-        this.a = a;
-        this.b = b;
-        this.c = c;
-        this.d = d;
-        this.e = e;
+    @PostMapping("/abr")
+    public String man(@RequestParam(value = "name",required = false,defaultValue = "неуказано") String name,
+                      @RequestParam(value = "surname",required = false,defaultValue = "неуказано") String surname,
+                      @RequestParam(value = "patronymic",required = false,defaultValue = "неуказано") String patronymic,
+                      @RequestParam(value = "pizzaType",required = false) String pizzaType,
+                      @RequestParam(value = "isAcute",required = false,defaultValue = "false") Boolean isAcute){
+        String isAcutes="";
+        if (isAcute){
+            isAcutes="острая";
+        }else {
+            isAcutes="обычная";
+        }
+        Zakaz zakaz = new Zakaz(name,surname,patronymic,pizzaType,isAcutes,i);
+        zakazs.add(zakaz);
+        i++;
+        return "redirect:/pizza";
     }
 
-    @Override
-    public String toString() {
-        return "Zakaz{" +
-                "a='" + a + '\'' +
-                ", b='" + b + '\'' +
-                ", c='" + c + '\'' +
-                ", d='" + d + '\'' +
-                ", e=" + e +
-                '}';
+    @PostMapping("/obrDelite")
+    public String obrDelite(@RequestParam(value = "as",required = false) String as){
+        System.out.println(as);
+        String puth = "";
+        if (Integer.parseInt(as)>=0){
+            zakazs.remove(Integer.parseInt(as));
+            int count2=0;
+            for (Zakaz u:zakazs){
+                u.id=count2;
+                count2++;
+            }
+            i=zakazs.toArray().length-1;
+            if(i<=0){
+                i=0;
+            }
+            puth="pizza";
+        }
+        else {
+
+        }
+        return "redirect:/"+puth;
+    }
+
+    @PostMapping("/obrDeliteAll")
+    public String obrDeliteAll(@RequestParam(value = "ss",required = false) String ss){
+        zakazs = new ArrayList<>();
+        i=0;
+        return "redirect:/pizza";
     }
 }

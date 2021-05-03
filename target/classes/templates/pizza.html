@@ -12,38 +12,51 @@
         <form id="vertical" method="post" action="/abr">
             <div>
                 <p>ведите имя</p>
-                <input type="text" name="a"><br>
+                <input type="text" name="name"><br>
                 <p>ведите фамилию</p>
-                <input type="text" class="inp" name="b"><br>
+                <input type="text" class="inp" name="surname"><br>
                 <p>ведите отчество</p>
-                <input type="text" class="inp inp1" name="c">
+                <input type="text" class="inp inp1" name="patronymic">
             </div>
 
-            <select name="d">
+            <select name="pizzaType">
                 <option>пицца корбанара</option>
                 <option>пицца пеперони</option>
                 <option>пицца цезарь</option>
             </select>
             <div id="gorizont">
                 <p>острая</p>
-                <input type="checkbox" name="e">
+                <input type="checkbox" name="isAcute">
             </div>
             <input type="submit" value="заказать">
         </form>
     </div>
 </div>
-<table>
-    <tr th:each="zakaz1 : ${zakazs}">
-        <td th:text="${zakaz1}"></td>
-    </tr>
-</table>
-<div class="yellowFonZakaz">
 
-<!--    <p th:text="${name}" class="zakaz"></p>-->
-<!--    <p th:text="${surname}" class="zakaz">Шляпин</p>-->
-<!--    <p class="zakaz">Александрович</p>-->
-<!--    <p class="zakaz">пицца корбанара</p>-->
-<!--    <p th:text="${c}" class="zakaz"></p>-->
+<div class="yellowFonZakaz">
+    <form action="/obrDelite" method="post">
+        <table>
+            <tr th:each="zakaz1 : ${zakazs}">
+                <td th:text="${zakaz1.name}"></td>
+                <td th:text="${zakaz1.surname}"></td>
+                <td th:text="${zakaz1.patronymic}"></td>
+                <td th:text="${zakaz1.pizzaType}"></td>
+                <td th:text="${zakaz1.isAcute}"></td>
+                <td><button th:value="${zakaz1.id}" name="as">удалить</button></td>
+                <td><button th:value="${zakaz1.id}" formaction="/obrPizzaEditing" name="as">редактировать</button></td>
+            </tr>
+        </table>
+    </form>
+    <form action="/obrDeliteAll" method="post">
+        <button name="ss">удалить все</button>
+        <button formaction="/filter" th:value="as" name="as">найти</button>
+    </form>
+
+    <!--    <p th:text="${name}" class="zakaz"></p>-->
+    <!--    <p th:text="${surname}" class="zakaz">Шляпин</p>-->
+    <!--    <p class="zakaz">Александрович</p>-->
+    <!--    <p class="zakaz">пицца корбанара</p>-->
+    <!--    <p th:text="${c}" class="zakaz"></p>-->
 </div>
 <img src="https://habrastorage.org/getpro/habr/post_images/822/fcc/d9a/822fccd9a214266b046851374d588465.jpg" id="back">
 </body>
