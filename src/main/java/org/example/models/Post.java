@@ -14,6 +14,17 @@ public class Post {
 
     private String name,surname,patronymic,pizzaType,isAcute;
 
+    public Post() {
+    }
+
+    public Post(String name, String surname, String patronymic, String pizzaType, String isAcute) {
+        this.name = name;
+        this.surname = surname;
+        this.patronymic = patronymic;
+        this.pizzaType = pizzaType;
+        this.isAcute = isAcute;
+    }
+
     public Long getID() {
         return ID;
     }
@@ -21,14 +32,6 @@ public class Post {
     public void setID(Long ID) {
         this.ID = ID;
     }
-
-//    public int getId() {
-//        return id;
-//    }
-//
-//    public void setId(int id) {
-//        this.id = id;
-//    }
 
     public String getName() {
         return name;
