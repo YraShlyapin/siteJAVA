@@ -51,7 +51,9 @@
         <button name="ss">удалить все</button>
         <button formaction="/filter" th:value="as" name="as">найти</button>
     </form>
-
+<div th:each="post : ${posts}">
+    <h3 th:text="${post.name}"></h3>
+</div>
     <!--    <p th:text="${name}" class="zakaz"></p>-->
     <!--    <p th:text="${surname}" class="zakaz">Шляпин</p>-->
     <!--    <p class="zakaz">Александрович</p>-->

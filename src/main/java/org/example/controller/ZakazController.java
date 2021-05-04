@@ -2,6 +2,9 @@ package org.example.controller;
 
 import org.example.logick.Colcul;
 import org.example.logick.Zakaz;
+import org.example.models.Post;
+import org.example.repo.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +16,20 @@ import java.util.ArrayList;
 @Controller
 public class ZakazController{
 
+    @Autowired
+    private PostRepository postRepository;
+
     ArrayList<Zakaz> zakazs = new ArrayList<>();
     ArrayList<Zakaz> filterZakazs = new ArrayList<>();
     int i = 0;
     int number=0;
+    @GetMapping("/blog")
+    public String blog(Model model){
+        Iterable<Post> posts = postRepository.findAll();
+        model.addAttribute("posts",posts);
+        return "pizza";
+    }
+
 
     @GetMapping("/")
     public String home(){
@@ -60,6 +73,8 @@ public class ZakazController{
         model.addAttribute("answer",answer);
         return "colcul";
     }
+
+
     @GetMapping("/pizza")
     public String pizza(Model model){
         model.addAttribute("zakazs",zakazs);
@@ -78,6 +93,32 @@ public class ZakazController{
         model.addAttribute("acut",acut);
         return "pizzaEdit";
     }
+
+    @PostMapping("/obrPizzaEditing")
+    public String obrPizzaEditing(@RequestParam String as){
+        number=Integer.parseInt(as);
+        return "redirect:/pizzaEditing";
+    }
+
+    @PostMapping("/EditPizza")
+    public String EditPizza(@RequestParam(value = "name",required = false,defaultValue = "неуказано") String name,
+                            @RequestParam(value = "surname",required = false,defaultValue = "неуказано") String surname,
+                            @RequestParam(value = "patronymic",required = false,defaultValue = "неуказано") String patronymic,
+                            @RequestParam(value = "pizzaType",required = false) String pizzaType,
+                            @RequestParam(value = "isAcute",required = false,defaultValue = "false") Boolean isAcute){
+        String acut = "";
+        if (isAcute){
+            acut="острая";
+        }else {
+            acut="обычная";
+        }
+        Zakaz zakaz = new Zakaz(name,surname,patronymic,pizzaType,acut,number);
+        zakazs.set(number,zakaz);
+        return "redirect:/pizza";
+    }
+
+
+
 
     @GetMapping("/pizzaFilter")
     public String pizzaFilter(Model model){
@@ -141,29 +182,6 @@ public class ZakazController{
         return "redirect:/pizzaFilter";
     }
 
-    @PostMapping("/obrPizzaEditing")
-    public String obrPizzaEditing(@RequestParam String as){
-        number=Integer.parseInt(as);
-        return "redirect:/pizzaEditing";
-    }
-
-    @PostMapping("/EditPizza")
-    public String EditPizza(@RequestParam(value = "name",required = false,defaultValue = "неуказано") String name,
-                            @RequestParam(value = "surname",required = false,defaultValue = "неуказано") String surname,
-                            @RequestParam(value = "patronymic",required = false,defaultValue = "неуказано") String patronymic,
-                            @RequestParam(value = "pizzaType",required = false) String pizzaType,
-                            @RequestParam(value = "isAcute",required = false,defaultValue = "false") Boolean isAcute){
-        String acut = "";
-        if (isAcute){
-            acut="острая";
-        }else {
-            acut="обычная";
-        }
-        Zakaz zakaz = new Zakaz(name,surname,patronymic,pizzaType,acut,number);
-        zakazs.set(number,zakaz);
-        return "redirect:/pizza";
-    }
-
     @PostMapping("/abr")
     public String man(@RequestParam(value = "name",required = false,defaultValue = "неуказано") String name,
                       @RequestParam(value = "surname",required = false,defaultValue = "неуказано") String surname,
@@ -184,25 +202,17 @@ public class ZakazController{
 
     @PostMapping("/obrDelite")
     public String obrDelite(@RequestParam(value = "as",required = false) String as){
-        System.out.println(as);
-        String puth = "";
-        if (Integer.parseInt(as)>=0){
-            zakazs.remove(Integer.parseInt(as));
-            int count2=0;
-            for (Zakaz u:zakazs){
-                u.id=count2;
-                count2++;
-            }
-            i=zakazs.toArray().length-1;
-            if(i<=0){
-                i=0;
-            }
-            puth="pizza";
+        zakazs.remove(Integer.parseInt(as));
+        int count2=0;
+        for (Zakaz u:zakazs){
+            u.id=count2;
+            count2++;
         }
-        else {
-
+        i=zakazs.toArray().length-1;
+        if(i<=0){
+            i=0;
         }
-        return "redirect:/"+puth;
+        return "redirect:/pizza";
     }
 
     @PostMapping("/obrDeliteAll")
