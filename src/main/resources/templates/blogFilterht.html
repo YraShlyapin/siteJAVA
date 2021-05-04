@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Юху закажите свою пицу</title>
+<body>
+<div id="center">
+    <div id="yellowFon">
+        <h1>заказ пиццы</h1>
+        <form id="vertical" method="post" action="/filtPizza">
+            <div>
+                <p>ведите имя</p>
+                <input type="text" name="name"><br>
+                <p>ведите фамилию</p>
+                <input type="text" class="inp" name="surname"><br>
+                <p>ведите отчество</p>
+                <input type="text" class="inp inp1" name="patronymic">
+            </div>
+<!--            onselect="${zakazs.get(number).pizzaType}"-->
+            <select name="pizzaType">
+                <option>пицца корбанара</option>
+                <option>пицца пеперони</option>
+                <option>пицца цезарь</option>
+            </select>
+            <div id="gorizont">
+                <p>острая</p>
+                <input type="checkbox" name="isAcute">
+            </div>
+            <input type="submit" value="найти">
+            <button><a href="/pizza">на главную</a></button>
+        </form>
+    </div>
+
+</div>
+<div class="yellowFonZakaz">
+    <form action="/obrDelite" method="post">
+        <table>
+            <p>по имени</p>
+            <tr th:each="zakaz1 : ${zakaz}">
+                <td th:text="${zakaz1.name}"></td>
+                <td th:text="${zakaz1.surname}"></td>
+                <td th:text="${zakaz1.patronymic}"></td>
+                <td th:text="${zakaz1.pizzaType}"></td>
+                <td th:text="${zakaz1.isAcute}"></td>
+                <td><button th:value="${zakaz1.id}" name="as">удалить</button></td>
+                <td><button th:value="${zakaz1.id}" formaction="/obrPizzaEditing" name="as">редактировать</button></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<img src="https://habrastorage.org/getpro/habr/post_images/822/fcc/d9a/822fccd9a214266b046851374d588465.jpg" id="back">
+</body>
+<style>
+a{
+text-decoration:none;
+color:black;
+}
+.zakaz{
+    margin-right:10px;
+}
+.yellowFonZakaz{
+    display:flex;
+    background-color:yellow;
+    margin-top:100px;
+    margin-left:50px;
+    margin-right:50px;
+    padding-bottom:100px;
+}
+body{
+    margin:0;
+}
+#yellowFon{
+    background-color:yellow;
+    margin-top:25px;
+    padding-left:25px;
+    padding-right:25px;
+    padding-bottom:25px;
+}
+#center{
+    display:flex;
+    justify-content: center;
+}
+#back{
+    height:100%
+    position:absolute;
+    position:fixed;
+    z-index:-10;
+    top:0px;
+    left:0px;
+}
+    p{
+        margin:0px;
+    }
+    #gorizont{
+        padding-top:15px;
+        display:flex;
+    }
+    .inp{
+        margin-top:5px;
+    }
+    .inp1{
+        margin-bottom:5px;
+    }
+    button{
+        margin-top:10px;
+    }
+</style>
+</html>
