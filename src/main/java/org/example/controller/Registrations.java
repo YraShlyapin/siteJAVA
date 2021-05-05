@@ -27,13 +27,14 @@ public class Registrations {
                           @RequestParam String username,
                           @RequestParam String password){
         User userFromDB = userRepository.findByUsername(user.getUserName());
-
-        if (userFromDB != null) {
-//            model.addAttribute("massage", "пользовотель уже зарегестрирован");
-//            System.out.println("хы лох");
-//            return "registration";
+        Iterable<User> users = userRepository.findAll();
+        for (User u:users){
+            if (u.getUserName().equals(username)){
+                model.addAttribute("message", "пользовотель уже зарегестрирован");
+                return "registration";
+            }
         }
-
+        model.addAttribute("message", "");
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         user.setPassword(password);
