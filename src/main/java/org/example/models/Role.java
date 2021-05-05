@@ -1,2 +1,5 @@
-package org.example.models;public enum Role {
+package org.example.models;
+
+public enum Role {
+    USER;
 }

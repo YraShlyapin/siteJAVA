@@ -51,10 +51,19 @@
         <button>удалить все</button>
         <button formaction="/blogFilter" formmethod="post">найти</button>
     </form>
+    <form th:action="@{/logout}" method="post" class="signOut">
+        <input type="submit" value="выйти"/>
+    </form>
 </div>
 <img src="https://habrastorage.org/getpro/habr/post_images/822/fcc/d9a/822fccd9a214266b046851374d588465.jpg" id="back">
 </body>
 <style>
+.signOut{
+    position:absolute;
+    right:10px;
+    top:10px;
+    z-index:999;
+}
 .zakaz{
     margin-right:10px;
 }
