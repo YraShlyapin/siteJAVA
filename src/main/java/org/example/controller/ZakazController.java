@@ -22,6 +22,10 @@ public class ZakazController{
 
 
     ArrayList<Post> filterPosts = new ArrayList<>();
+    ArrayList<Post> filterPosts1 = new ArrayList<>();
+    ArrayList<Post> filterPosts2 = new ArrayList<>();
+    ArrayList<Post> filterPosts3 = new ArrayList<>();
+    ArrayList<Post> filterPosts4 = new ArrayList<>();
 
 
     int number = 0;
@@ -64,25 +68,52 @@ public class ZakazController{
     @GetMapping("/blogFilter")
     public String blogFilter(Model model){
         model.addAttribute("zakaz",filterPosts);
+        model.addAttribute("zakaz1",filterPosts1);
+        model.addAttribute("zakaz2",filterPosts2);
+        model.addAttribute("zakaz3",filterPosts3);
+        model.addAttribute("zakaz4",filterPosts4);
         return "blogFilterht";
     }
     @PostMapping("/blogFilter")
     public String postBlogFilter(){
         filterPosts = new ArrayList<>();
+        filterPosts1 = new ArrayList<>();
+        filterPosts2 = new ArrayList<>();
+        filterPosts3 = new ArrayList<>();
+        filterPosts4 = new ArrayList<>();
         return "redirect:/blogFilter";
     }
 
     @PostMapping("/filterBlog")
-    public String filterBlog(@RequestParam(value = "name",required = false,defaultValue = "неуказано") String name,
+    public String filterBlog(@RequestParam(value = "name",required = false) String name,
                             @RequestParam(value = "surname",required = false) String surname,
                             @RequestParam(value = "patronymic",required = false) String patronymic,
                             @RequestParam(value = "pizzaType",required = false) String pizzaType,
                             @RequestParam(value = "isAcute",required = false,defaultValue = "false") Boolean isAcute){
+        filterPosts = new ArrayList<>();
+        filterPosts1 = new ArrayList<>();
+        filterPosts2 = new ArrayList<>();
+        filterPosts3 = new ArrayList<>();
+        filterPosts4 = new ArrayList<>();
     Iterable<Post> posts = postRepository.findAll();
-    for (Post p:posts){
+        for (Post p:posts){
             if (p.getName().equals(name)){
                 filterPosts.add(p);
             }
+            if (p.getSurname().equals(surname)){
+                filterPosts1.add(p);
+            }
+            if (p.getPatronymic().equals(patronymic)){
+                filterPosts2.add(p);
+            }
+            if (p.getPizzaType().equals(pizzaType)){
+                filterPosts3.add(p);
+            }
+//            if (p.getIsAcute().equals()){
+//                filterPosts4.add(p);
+//            }else if (surname==null){
+//
+//            }
         }
         return "redirect:/blogFilter";
     }

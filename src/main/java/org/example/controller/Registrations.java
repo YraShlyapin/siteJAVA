@@ -1,6 +1,5 @@
 package org.example.controller;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud;
 import org.example.models.Role;
 import org.example.models.User;
 import org.example.repo.UserRepository;
