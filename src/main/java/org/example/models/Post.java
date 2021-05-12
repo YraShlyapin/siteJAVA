@@ -12,17 +12,28 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long ID;
 
+    private Long idUset;
+
     private String name,surname,patronymic,pizzaType,isAcute;
 
     public Post() {
     }
 
-    public Post(String name, String surname, String patronymic, String pizzaType, String isAcute) {
+    public Post(String name, String surname, String patronymic, String pizzaType, String isAcute,Long idUset) {
+        this.idUset = idUset;
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
         this.pizzaType = pizzaType;
         this.isAcute = isAcute;
+    }
+
+    public Long getIdUset() {
+        return idUset;
+    }
+
+    public void setIdUset(Long idUset) {
+        this.idUset = idUset;
     }
 
     public Long getID() {

@@ -15,7 +15,8 @@ public class NewController {
 
     @GetMapping("/")
     public String home1(){
-        return "index";
+//        return "index";
+        return "redirect:/blog";
     }
     @GetMapping("/about")
     public String about(){

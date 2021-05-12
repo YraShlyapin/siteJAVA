@@ -25,7 +25,6 @@ public class Registrations {
     public String addUser(User user, Model model,
                           @RequestParam String username,
                           @RequestParam String password){
-        User userFromDB = userRepository.findByUsername(user.getUserName());
         Iterable<User> users = userRepository.findAll();
         for (User u:users){
             if (u.getUserName().equals(username)){

@@ -1,10 +1,12 @@
 package org.example.controller;
 
-import org.example.logick.Colcul;
-import org.example.logick.Zakaz;
 import org.example.models.Post;
+import org.example.models.User;
 import org.example.repo.PostRepository;
+import org.example.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +21,8 @@ public class ZakazController{
 
     @Autowired
     private PostRepository postRepository;
-
+    @Autowired
+    private UserRepository userRepository;
 
     ArrayList<Post> filterPosts = new ArrayList<>();
     ArrayList<Post> filterPosts1 = new ArrayList<>();
@@ -27,13 +30,20 @@ public class ZakazController{
     ArrayList<Post> filterPosts3 = new ArrayList<>();
     ArrayList<Post> filterPosts4 = new ArrayList<>();
 
-
     int number = 0;
 
     @GetMapping("/blog")
     public String blog(Model model){
         Iterable<Post> posts = postRepository.findAll();
-        model.addAttribute("posts",posts);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userFromDB = userRepository.findByUsername(authentication.getName());
+        ArrayList<Post> posts1 = new ArrayList<>();
+        for (Post p:posts){
+            if (p.getIdUset()==userFromDB.getId()){
+                posts1.add(p);
+            }
+        }
+        model.addAttribute("posts",posts1);
         return "pizzaSQL";
     }
     @PostMapping("/blogAdd")
@@ -48,7 +58,9 @@ public class ZakazController{
         }else {
             isAcutes="обычная";
         }
-        Post post = new Post(name,surname,patronymic,pizzaType,isAcutes);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userFromDB = userRepository.findByUsername(authentication.getName());
+        Post post = new Post(name,surname,patronymic,pizzaType,isAcutes,userFromDB.getId());
         postRepository.save(post);
         return "redirect:/blog";
     }
@@ -61,7 +73,14 @@ public class ZakazController{
 
     @PostMapping("/blogDeliteAll")
     public String blogDeliteAll(){
-        postRepository.deleteAll();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userFromDB = userRepository.findByUsername(authentication.getName());
+        Iterable<Post> posts = postRepository.findAll();
+        for (Post p:posts){
+            if (p.getIdUset()==userFromDB.getId()){
+                postRepository.delete(p);
+            }
+        }
         return "redirect:/blog";
     }
 
@@ -95,8 +114,16 @@ public class ZakazController{
         filterPosts2 = new ArrayList<>();
         filterPosts3 = new ArrayList<>();
         filterPosts4 = new ArrayList<>();
-    Iterable<Post> posts = postRepository.findAll();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userFromDB = userRepository.findByUsername(authentication.getName());
+        Iterable<Post> posts = postRepository.findAll();
+        ArrayList<Post> posts1 = new ArrayList<>();
         for (Post p:posts){
+            if (p.getIdUset()==userFromDB.getId()){
+                posts1.add(p);
+            }
+        }
+        for (Post p:posts1){
             if (p.getName().equals(name)){
                 filterPosts.add(p);
             }
@@ -161,7 +188,9 @@ public class ZakazController{
         }else {
             acut="обычная";
         }
-        Post post = new Post(name,surname,patronymic,pizzaType,acut);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userFromDB = userRepository.findByUsername(authentication.getName());
+        Post post = new Post(name,surname,patronymic,pizzaType,acut,userFromDB.getId());
         Iterable<Post> posts = postRepository.findAll();
         ArrayList<Post> posts1 = new ArrayList<>();
 
