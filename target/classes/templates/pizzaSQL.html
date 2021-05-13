@@ -6,17 +6,20 @@
     <meta charset="UTF-8">
     <title>Юху закажите свою пицу</title>
 <body>
-<div id="center">
+<div class="center">
     <div id="yellowFon">
-        <h1>заказ пиццы</h1>
-        <form id="vertical" method="post" action="/blogAdd">
+        <h1 class="center">заказ пиццы</h1>
+        <form id="vertical" method="post" action="/blogAdd" novalidate>
             <div>
-                <p>ведите имя</p>
-                <input type="text" name="name" placeholder="имя"><br>
-                <p>ведите фамилию</p>
-                <input type="text" class="inp" name="surname" placeholder="фамилия"><br>
-                <p>ведите отчество</p>
-                <input type="text" class="inp inp1" name="patronymic" placeholder="отчество">
+                <div class="form-row">
+                    <input id="name" type="text" name="name" required><label for="name">Имя</label>
+                </div>
+                <div class="form-row">
+                    <input id="surname" class="inp" type="text" name="surname" required><label for="surname">Фамилия</label>
+                </div>
+                <div class="form-row form1">
+                    <input id="patronymic" class="inp inp1" type="text" name="patronymic" required><label for="patronymic">Отчество</label>
+                </div>
             </div>
 
             <select name="pizzaType">
@@ -28,7 +31,7 @@
                 <p>острая</p>
                 <input type="checkbox" name="isAcute">
             </div>
-            <input type="submit" value="заказать">
+            <input type="submit" value="заказать" class="floating-button">
         </form>
     </div>
 </div>
@@ -42,22 +45,120 @@
                 <td th:text="${zakaz1.patronymic}"></td>
                 <td th:text="${zakaz1.pizzaType}"></td>
                 <td th:text="${zakaz1.isAcute}"></td>
-                <td><button th:value="${zakaz1.ID}" name="id">удалить</button></td>
-                <td><button th:value="${zakaz1.ID}" formaction="/obrBlogEditing" name="as">редактировать</button></td>
+                <td><button th:value="${zakaz1.ID}" name="id" class="floating-button1">удалить</button></td>
+                <td><button th:value="${zakaz1.ID}" formaction="/obrBlogEditing" name="as" class="floating-button1">редактировать</button></td>
             </tr>
         </table>
     </form>
     <form action="/blogDeliteAll" method="post">
-        <button>удалить все</button>
-        <button formaction="/blogFilter" formmethod="post">найти</button>
+        <button class="floating-button">удалить все</button>
+        <button formaction="/blogFilter" formmethod="post" class="floating-button">найти</button>
     </form>
     <form th:action="@{/logout}" method="post" class="signOut">
-        <input type="submit" value="выйти"/>
+        <input type="submit" value="выйти" class="floating-button"/>
     </form>
 </div>
 <img src="https://habrastorage.org/getpro/habr/post_images/822/fcc/d9a/822fccd9a214266b046851374d588465.jpg" id="back">
 </body>
 <style>
+
+.form-row {
+   position: relative;
+   margin-bottom: 40px;
+   margin-top: 35px;
+}
+.form1{
+   position: relative;
+   margin-bottom: 10px;
+}
+.form-row input {
+   display: block;
+   width: 90%;
+   color: #524f4e;
+   padding-bottom:10px;
+   font-weight: 600;
+   background: none;
+   border-width: 0;
+   border-bottom: 2px solid #524f4e;
+   transition: all 0.2s ease;
+}
+.form-row label {
+   position: absolute;
+   left: 13px;
+   color: #9d959d;
+   font-size: 20px;
+   font-weight: 300;
+   transform: translateY(-35px);
+   transition: all 0.2s ease;
+}
+.form-row input:focus {
+   outline: 0;
+   border-color: #2EE59D;
+}
+.form-row input:focus+label, input:valid + label{
+   transform: translateY(-60px);
+   margin-left: -14px;
+   font-size: 14px;
+   font-weight: 400;
+   outline: 0;
+   border-color: #2EE59D;
+   color: #2EE59D;
+}
+
+
+.floating-button {
+  border: none;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top:15px;
+  line-height: 35px;
+  border-radius: 45px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 3px;
+  color: #524f4e;
+  font-weight: 600;
+  background: white;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+  transition: .3s;
+}
+.floating-button:hover {
+  background: #2EE59D;
+  box-shadow: 0 15px 20px rgba(46, 229, 157, .4);
+  color: white;
+  transform: translateY(-5px);
+}
+
+.floating-button1 {
+  border: none;
+  margin-top:15px;
+  padding-left: 20px;
+  padding-right: 20px;
+  line-height: 20px;
+  border-radius: 45px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 3px;
+  color: #524f4e;
+  font-weight: 600;
+  background: white;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+  transition: .3s;
+}
+.floating-button1:hover {
+  background: #2EE59D;
+  box-shadow: 0 15px 20px rgba(46, 229, 157, .4);
+  color: white;
+  transform: translateY(-5px);
+}
+
+
+
+
 a{
     color: #000;
     text-decoration: none;
@@ -88,8 +189,9 @@ body{
     padding-left:25px;
     padding-right:25px;
     padding-bottom:25px;
+    width: 325px;
 }
-#center{
+.center{
     display:flex;
     justify-content: center;
 }

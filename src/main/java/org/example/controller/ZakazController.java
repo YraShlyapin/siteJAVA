@@ -39,7 +39,7 @@ public class ZakazController{
         User userFromDB = userRepository.findByUsername(authentication.getName());
         ArrayList<Post> posts1 = new ArrayList<>();
         for (Post p:posts){
-            if (p.getIdUset()==userFromDB.getId()){
+            if (userFromDB.getId().equals(p.getIdUset())){
                 posts1.add(p);
             }
         }
@@ -77,7 +77,7 @@ public class ZakazController{
         User userFromDB = userRepository.findByUsername(authentication.getName());
         Iterable<Post> posts = postRepository.findAll();
         for (Post p:posts){
-            if (p.getIdUset()==userFromDB.getId()){
+            if (p.getIdUset().equals(userFromDB.getId())){
                 postRepository.delete(p);
             }
         }

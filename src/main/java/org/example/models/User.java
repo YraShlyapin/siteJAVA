@@ -1,9 +1,6 @@
 package org.example.models;
 
-import org.example.repo.UserRepository;
-
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Set;
 
 @Entity
