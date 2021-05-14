@@ -63,15 +63,23 @@
         <input type="submit" value="выйти" class="floating-button"/>
     </form>
 </div>
-<img src="https://habrastorage.org/getpro/habr/post_images/822/fcc/d9a/822fccd9a214266b046851374d588465.jpg" id="back">
 </body>
 <style>
+body{
+     background-image: url(https://img4.goodfon.ru/wallpaper/nbig/c/81/pitstsy-testo-syr-makarony.jpg);
+     background-repeat: no-repeat;
+     background-attachment: fixed;
+     background-size: 130%;
+}
+
+
 .select {
   position: relative;
   display: inline-block;
   margin-bottom: 15px;
   margin-top: 15px;
   width: 90%;
+  transition: all 0.5s ease;
 }
 .select select {
   display: inline-block;
@@ -85,6 +93,9 @@
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  border-radius: 45px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .1);
+  transition: all 0.5s ease;
 }
 .select select::-ms-expand {
   display: none;
@@ -93,8 +104,12 @@
 .select select:focus {
   background: #2EE59D;
   color: white;
-  border-radius: 45px;
-  transition: all 0.2s ease;
+  box-shadow: 0 15px 20px rgba(46, 229, 157, .4);
+  transition: all 0.5s ease;
+}
+.select:hover,.select:focus{
+  transform: translateY(-10px);
+  transition: all 0.5s ease;
 }
 .select select:disabled {
   pointer-events: none;
