@@ -21,15 +21,20 @@
                     <input id="patronymic" class="inp inp1" type="text" name="patronymic" required><label for="patronymic">Отчество</label>
                 </div>
             </div>
+            <div class="select">
+                <select name="pizzaType">
+                    <option>пицца корбанара</option>
+                    <option>пицца пеперони</option>
+                    <option>пицца цезарь</option>
+                </select>
+                <div class="select__arrow"></div>
+            </div>
 
-            <select name="pizzaType">
-                <option>пицца корбанара</option>
-                <option>пицца пеперони</option>
-                <option>пицца цезарь</option>
-            </select>
             <div id="gorizont">
-                <p>острая</p>
-                <input type="checkbox" name="isAcute">
+                <label class="control control--checkbox">Острая
+                    <input type="checkbox" name="isAcute"/>
+                    <div class="control__indicator"></div>
+                </label>
             </div>
             <input type="submit" value="заказать" class="floating-button">
         </form>
@@ -61,6 +66,127 @@
 <img src="https://habrastorage.org/getpro/habr/post_images/822/fcc/d9a/822fccd9a214266b046851374d588465.jpg" id="back">
 </body>
 <style>
+.select {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  width: 90%;
+}
+.select select {
+  display: inline-block;
+  width: 100%;
+  cursor: pointer;
+  padding: 10px 15px;
+  outline: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.select select::-ms-expand {
+  display: none;
+}
+.select select:hover,
+.select select:focus {
+  background: #2EE59D;
+  color: white;
+  border-radius: 45px;
+  transition: all 0.2s ease;
+}
+.select select:disabled {
+  pointer-events: none;
+}
+.select__arrow {
+  position: absolute;
+  top: 16px;
+  right: 15px;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  border-style: solid;
+  border-width: 8px 5px 0 5px;
+  border-color: #7b7b7b transparent transparent transparent;
+}
+.select select:disabled ~ .select__arrow {
+  border-top-color: #ccc;
+}
+
+
+.control {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+.control input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+.control__indicator {
+  position: absolute;
+  top: 0px;
+  left: 0;
+  height: 16px;
+  width: 16px;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+.control--checkbox .control__indicator {
+  border-radius: 3px;
+}
+.control--radio .control__indicator {
+  border-radius: 50%;
+}
+.control:hover input:not([disabled]) ~ .control__indicator,
+.control input:focus ~ .control__indicator {
+  border-color: #666;
+}
+.control input:checked ~ .control__indicator {
+  background: #fff;
+}
+.control input:disabled ~ .control__indicator {
+  background: #e6e6e6;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.control__indicator:after {
+  content: '';
+  position: absolute;
+  display: none;
+}
+.control input:checked ~ .control__indicator:after {
+  display: block;
+}
+.control--checkbox .control__indicator:after {
+  left: 5px;
+  top: 0px;
+  width: 5px;
+  height: 12px;
+  border: solid #34bb92;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.control--checkbox input:disabled ~ .control__indicator:after {
+  border-color: #7b7b7b;
+}
+.control--radio .control__indicator:after {
+  left: 5px;
+  top: 5px;
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background: #34bb92;
+}
+.control--radio input:disabled ~ .control__indicator:after {
+  background: #7b7b7b;
+}
+
+
 
 .form-row {
    position: relative;
@@ -110,7 +236,7 @@
   border: none;
   padding-left: 20px;
   padding-right: 20px;
-  margin-top:15px;
+  margin-top:10px;
   line-height: 35px;
   border-radius: 45px;
   font-family: 'Montserrat', sans-serif;
@@ -133,11 +259,11 @@
 
 .floating-button1 {
   border: none;
-  margin-top:15px;
   padding-left: 20px;
   padding-right: 20px;
   line-height: 20px;
   border-radius: 45px;
+  margin-top:4px;
   font-family: 'Montserrat', sans-serif;
   font-size: 10px;
   text-transform: uppercase;
@@ -173,17 +299,21 @@ a{
     margin-right:10px;
 }
 .yellowFonZakaz{
+border-radius:20px;
     display:flex;
     background-color:yellow;
     margin-top:100px;
     margin-left:50px;
     margin-right:50px;
     padding-bottom:100px;
+    padding-left:15px;
+    padding-top:10px;
 }
 body{
     margin:0;
 }
 #yellowFon{
+    border-radius:45px;
     background-color:yellow;
     margin-top:25px;
     padding-left:25px;

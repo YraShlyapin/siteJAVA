@@ -119,7 +119,7 @@ public class ZakazController{
         Iterable<Post> posts = postRepository.findAll();
         ArrayList<Post> posts1 = new ArrayList<>();
         for (Post p:posts){
-            if (p.getIdUset()==userFromDB.getId()){
+            if (p.getIdUset().equals(userFromDB.getId())){
                 posts1.add(p);
             }
         }
