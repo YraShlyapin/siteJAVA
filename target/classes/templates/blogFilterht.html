@@ -4,7 +4,7 @@
         xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Юху закажите свою пицу</title>
+    <title>Buenos pizza</title>
 <body>
 <div class="center">
     <div class="yellowFon">
@@ -30,6 +30,14 @@
                 </select>
                 <div class="select__arrow"></div>
             </div>
+            <div class="select">
+                <select name="Size">
+                    <option value="1">маленькая</option>
+                    <option value="2">средняя</option>
+                    <option value="3">большая</option>
+                </select>
+                <div class="select__arrow"></div>
+            </div>
             <div id="gorizont">
                 <label class="control control--checkbox">Острая
                     <input type="checkbox" name="isAcute"/>
@@ -51,6 +59,7 @@
             <td th:text="${zakaz1.patronymic}"></td>
             <td th:text="${zakaz1.pizzaType}"></td>
             <td th:text="${zakaz1.isAcute}"></td>
+            <td>цена <span th:text="${zakaz1.price}+р"></span></td>
         </tr>
     </table>
     <table>
@@ -61,6 +70,7 @@
             <td th:text="${zakaz1.patronymic}"></td>
             <td th:text="${zakaz1.pizzaType}"></td>
             <td th:text="${zakaz1.isAcute}"></td>
+            <td>цена <span th:text="${zakaz1.price}+р"></span></td>
         </tr>
     </table>
     <table>
@@ -71,6 +81,7 @@
             <td th:text="${zakaz1.patronymic}"></td>
             <td th:text="${zakaz1.pizzaType}"></td>
             <td th:text="${zakaz1.isAcute}"></td>
+            <td>цена <span th:text="${zakaz1.price}+р"></span></td>
         </tr>
     </table>
     <table>
@@ -81,6 +92,7 @@
             <td th:text="${zakaz1.patronymic}"></td>
             <td th:text="${zakaz1.pizzaType}"></td>
             <td th:text="${zakaz1.isAcute}"></td>
+            <td>цена <span th:text="${zakaz1.price}+р"></span></td>
         </tr>
     </table>
 </div>

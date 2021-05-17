@@ -4,15 +4,19 @@
         xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Регистрация</title>
+    <title>Регистрация Сотрудников</title>
 <body>
 <div class="center">
     <div id="yellowFon">
-        <form th:action="@{/registration}" method="post" id="vertical">
+        <form action="/registrationWorker" method="post" id="vertical">
             <h1 class="center">Зарегистрируйтесь</h1>
 
             <div class="form-row">
                 <input id="email" type="text" name="username" required><label for="email">Введите имя</label>
+            </div>
+
+            <div class="form-row form1">
+                <input id="code" type="text" name="code" required><label for="code">Введите Код</label>
             </div>
 
             <div class="form-row form1">
@@ -23,7 +27,6 @@
         </form>
     </div>
 </div>
-<a href="/registrationWorker" class="signOut1 floating-button">зарегистрироваться как работник</a>
 <a href="/login" class="signOut floating-button">назад</a>
 </body>
 <style>
@@ -110,16 +113,10 @@ a{
 #inp{
     margin-right:20px;
 }
-.signOut1{
-    position:absolute;
-    right:10px;
-    top:10px;
-    z-index:999;
-}
 .signOut{
     position:absolute;
     right:10px;
-    top:55px;
+    top:10px;
     z-index:999;
 }
 .zakaz{

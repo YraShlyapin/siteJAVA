@@ -16,16 +16,23 @@ public class Post {
 
     private String name,surname,patronymic,pizzaType,isAcute;
 
+    int price,size;
+
+    Boolean isReady;
+
     public Post() {
     }
-
-    public Post(String name, String surname, String patronymic, String pizzaType, String isAcute,Long idUset) {
+//
+    public Post(String name, String surname, String patronymic, String pizzaType, String isAcute,Long idUset, int price,int size,boolean isReady) {
         this.idUset = idUset;
         this.name = name;
         this.surname = surname;
         this.patronymic = patronymic;
         this.pizzaType = pizzaType;
         this.isAcute = isAcute;
+        this.price = price;
+        this.size=size;
+        this.isReady=isReady;
     }
 
     public Long getIdUset() {
@@ -82,5 +89,29 @@ public class Post {
 
     public void setIsAcute(String isAcute) {
         this.isAcute = isAcute;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public Boolean getReady() {
+        return isReady;
+    }
+
+    public void setReady(Boolean ready) {
+        isReady = ready;
     }
 }

@@ -1,5 +1,6 @@
 package org.example.models;
 
 public enum Role {
-    USER;
+    USER,
+    Worker;
 }

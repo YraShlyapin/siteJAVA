@@ -1,6 +1,7 @@
 package org.example.controller;
 
 import org.example.models.Post;
+import org.example.models.Role;
 import org.example.models.User;
 import org.example.repo.PostRepository;
 import org.example.repo.UserRepository;
@@ -32,6 +33,11 @@ public class ZakazController{
 
     int number = 0;
 
+    @GetMapping("/personalArea")
+    public String personalArea(){
+        return "personalArea";
+    }
+
     @GetMapping("/blog")
     public String blog(Model model){
         Iterable<Post> posts = postRepository.findAll();
@@ -43,6 +49,13 @@ public class ZakazController{
                 posts1.add(p);
             }
         }
+        Boolean UFDB = false;
+        for (Role r:userFromDB.getRoles()){
+            if (r==Role.Worker){
+                UFDB = true;
+            }
+        }
+        model.addAttribute("UFDB",UFDB);
         model.addAttribute("posts",posts1);
         return "pizzaSQL";
     }
@@ -51,7 +64,8 @@ public class ZakazController{
                           @RequestParam(value = "surname",required = false,defaultValue = "неуказано") String surname,
                           @RequestParam(value = "patronymic",required = false,defaultValue = "неуказано") String patronymic,
                           @RequestParam(value = "pizzaType",required = false) String pizzaType,
-                          @RequestParam(value = "isAcute",required = false,defaultValue = "false")Boolean isAcute){
+                          @RequestParam(value = "isAcute",required = false,defaultValue = "false")Boolean isAcute,
+                          @RequestParam(defaultValue = "1") Integer Size){
         String isAcutes="";
         if (isAcute){
             isAcutes="острая";
@@ -60,7 +74,23 @@ public class ZakazController{
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User userFromDB = userRepository.findByUsername(authentication.getName());
-        Post post = new Post(name,surname,patronymic,pizzaType,isAcutes,userFromDB.getId());
+        int price=0;
+        switch (pizzaType){
+            case "пицца пеперони":
+                price+=200;
+                break;
+            case "пицца корбанара":
+                price+=300;
+                break;
+            case "пицца цезарь":
+                price+=250;
+                break;
+        }
+        if (isAcute){
+            price+=20;
+        }
+        price*=Size;
+        Post post = new Post(name,surname,patronymic,pizzaType,isAcutes,userFromDB.getId(),price,Size,false);
         postRepository.save(post);
         return "redirect:/blog";
     }
@@ -105,10 +135,11 @@ public class ZakazController{
 
     @PostMapping("/filterBlog")
     public String filterBlog(@RequestParam(value = "name",required = false) String name,
-                            @RequestParam(value = "surname",required = false) String surname,
-                            @RequestParam(value = "patronymic",required = false) String patronymic,
-                            @RequestParam(value = "pizzaType",required = false) String pizzaType,
-                            @RequestParam(value = "isAcute",required = false,defaultValue = "false") Boolean isAcute){
+                             @RequestParam(value = "surname",required = false) String surname,
+                             @RequestParam(value = "patronymic",required = false) String patronymic,
+                             @RequestParam(value = "pizzaType",required = false) String pizzaType,
+                             @RequestParam(value = "isAcute",required = false,defaultValue = "false") Boolean isAcute,
+                             @RequestParam(defaultValue = "1") Integer Size){
         filterPosts = new ArrayList<>();
         filterPosts1 = new ArrayList<>();
         filterPosts2 = new ArrayList<>();
@@ -181,7 +212,8 @@ public class ZakazController{
                             @RequestParam(value = "surname",required = false,defaultValue = "неуказано") String surname,
                             @RequestParam(value = "patronymic",required = false,defaultValue = "неуказано") String patronymic,
                             @RequestParam(value = "pizzaType",required = false) String pizzaType,
-                            @RequestParam(value = "isAcute",required = false,defaultValue = "false") Boolean isAcute){
+                            @RequestParam(value = "isAcute",required = false,defaultValue = "false") Boolean isAcute,
+                            @RequestParam int Size){
         String acut = "";
         if (isAcute){
             acut="острая";
@@ -190,7 +222,23 @@ public class ZakazController{
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User userFromDB = userRepository.findByUsername(authentication.getName());
-        Post post = new Post(name,surname,patronymic,pizzaType,acut,userFromDB.getId());
+        int price=0;
+        switch (pizzaType){
+            case "пицца пеперони":
+                price+=200;
+                break;
+            case "пицца корбанара":
+                price+=300;
+                break;
+            case "пицца цезарь":
+                price+=250;
+                break;
+        }
+        if (isAcute){
+            price+=20;
+        }
+        price*=Size;
+        Post post = new Post(name,surname,patronymic,pizzaType,acut,userFromDB.getId(),price,Size,false);
         Iterable<Post> posts = postRepository.findAll();
         ArrayList<Post> posts1 = new ArrayList<>();
 

@@ -4,7 +4,7 @@
         xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Юху закажите свою пицу</title>
+    <title>Buenos pizza</title>
 <body>
 <div class="center">
     <div id="yellowFon">
@@ -30,6 +30,15 @@
                 <div class="select__arrow"></div>
             </div>
 
+            <div class="select">
+                <select name="Size">
+                    <option value="1">маленькая</option>
+                    <option value="2">средняя</option>
+                    <option value="3">большая</option>
+                </select>
+                <div class="select__arrow"></div>
+            </div>
+
             <div id="gorizont">
                 <label class="control control--checkbox">Острая
                     <input type="checkbox" name="isAcute"/>
@@ -42,6 +51,10 @@
 </div>
 
 <div class="yellowFonZakaz">
+    <form action="/blogDeliteAll" method="post">
+        <button class="floating-button">удалить все</button>
+        <button formaction="/blogFilter" formmethod="post" class="floating-button">найти</button>
+    </form>
     <form action="/blogDelite" method="post">
         <table>
             <tr th:each="zakaz1 : ${posts}">
@@ -50,21 +63,39 @@
                 <td th:text="${zakaz1.patronymic}"></td>
                 <td th:text="${zakaz1.pizzaType}"></td>
                 <td th:text="${zakaz1.isAcute}"></td>
+                <td>цена <span th:text="${zakaz1.price}+р"></span></td>
+                <td>размер <span th:if="${zakaz1.getSize()}==1">маленький</span>
+                    <span th:if="${zakaz1.getSize()}==2">средний</span>
+                    <span th:if="${zakaz1.getSize()}==3">большой</span></td>
                 <td><button th:value="${zakaz1.ID}" name="id" class="floating-button1">удалить</button></td>
                 <td><button th:value="${zakaz1.ID}" formaction="/obrBlogEditing" name="as" class="floating-button1">редактировать</button></td>
+                <td><button formmethod="get" formaction="/blog" th:if="${zakaz1.getReady}" class="floating-button1 green">готово-оплатить</button>
+                    <button th:if="${zakaz1.getReady}==false" class="floating-button1 red">неготово</button></td>
             </tr>
         </table>
-    </form>
-    <form action="/blogDeliteAll" method="post">
-        <button class="floating-button">удалить все</button>
-        <button formaction="/blogFilter" formmethod="post" class="floating-button">найти</button>
     </form>
     <form th:action="@{/logout}" method="post" class="signOut">
         <input type="submit" value="выйти" class="floating-button"/>
     </form>
+    <a href="/personalArea" class="floating-button signOut1">личный кабинет</a>
+    <a th:if="${UFDB}" href="/zakaz" class="floating-button signOut2">заказы ожидающие приготовления</a>
 </div>
 </body>
 <style>
+.floating-button1.red {
+     background-color: #FF3300;
+     color:white;
+}
+.floating-button1.green {
+     background-color: #00FF66;
+     color:white;
+}
+.floating-button1.red:hover {
+     background-color: #FF3300;
+     box-shadow: 0 5px 20px #FF3300;
+}
+
+
 body{
      background-image: url(https://img4.goodfon.ru/wallpaper/nbig/c/81/pitstsy-testo-syr-makarony.jpg);
      background-repeat: no-repeat;
@@ -310,12 +341,23 @@ a{
     top:10px;
     z-index:999;
 }
+.signOut1{
+    position:absolute;
+    left:10px;
+    top:10px;
+    z-index:999;
+}
+.signOut2{
+    position:absolute;
+    left:10px;
+    top:55px;
+    z-index:999;
+}
 .zakaz{
     margin-right:10px;
 }
 .yellowFonZakaz{
 border-radius:20px;
-    display:flex;
     background-color:yellow;
     margin-top:100px;
     margin-left:50px;

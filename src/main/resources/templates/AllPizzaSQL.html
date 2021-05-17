@@ -4,62 +4,47 @@
         xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Buenos pizza</title>
+    <title>Юху закажите свою пицу</title>
 <body>
-<div class="center">
-    <div id="yellowFon">
-        <h1 class="center">Редактировать</h1>
-        <form id="vertical" method="post" action="/blogEditing" novalidate>
-            <div>
-                <div class="form-row">
-                    <input id="name" type="text" name="name" th:value="${zakazs.get(number).name}" required><label for="name">Имя</label>
-                </div>
-                <div class="form-row">
-                    <input id="surname" class="inp" type="text" name="surname" th:value="${zakazs.get(number).surname}" required><label for="surname">Фамилия</label>
-                </div>
-                <div class="form-row form1">
-                    <input id="patronymic" class="inp inp1" type="text" name="patronymic" th:value="${zakazs.get(number).patronymic}" required><label for="patronymic">Отчество</label>
-                </div>
-            </div>
-
-            <div class="select">
-                <select name="pizzaType">
-                    <option>пицца корбанара</option>
-                    <option>пицца пеперони</option>
-                    <option>пицца цезарь</option>
-                </select>
-                <div class="select__arrow"></div>
-            </div>
-            <div class="select">
-                <select name="Size">
-                    <option value="1">маленькая</option>
-                    <option value="2">средняя</option>
-                    <option value="3">большая</option>
-                </select>
-                <div class="select__arrow"></div>
-            </div>
-            <div id="gorizont">
-                <label class="control control--checkbox">Острая
-                    <input type="checkbox" name="isAcute" th:checked="${acut}"/>
-                    <div class="control__indicator"></div>
-                </label>
-            </div>
-            <input type="submit" value="редактировать" class="floating-button">
-            <button class="floating-button" formaction="/blog" formmethod="get">на главную</button>
-        </form>
-    </div>
+<div class="yellowFonZakaz">
+    <h1 th:text="${message}"></h1>
+    <form action="/zakaz" method="post">
+        <table>
+            <tr th:each="zakaz1 : ${posts}">
+                <td th:text="${zakaz1.name}"></td>
+                <td th:text="${zakaz1.surname}"></td>
+                <td th:text="${zakaz1.patronymic}"></td>
+                <td th:text="${zakaz1.pizzaType}"></td>
+                <td th:text="${zakaz1.isAcute}"></td>
+                <td>размер <span th:if="${zakaz1.getSize()}==1">маленький</span>
+                    <span th:if="${zakaz1.getSize()}==2">средний</span>
+                    <span th:if="${zakaz1.getSize()}==3">большой</span></td>
+                <td><span th:if="${zakaz1.getReady()}==false">неготово</span>
+                    <span th:if="${zakaz1.getReady()}==true">готово</span></td>
+                <td><button th:value="${zakaz1.ID}" name="id" class="floating-button1">готово</button></td>
+            </tr>
+        </table>
+    </form>
+    <form th:action="@{/logout}" method="post" class="signOut">
+        <input type="submit" value="выйти" class="floating-button"/>
+    </form>
+    <a href="/blog" class="signOut1 floating-button">назад</a>
 </div>
-<form th:action="@{/logout}" method="post" class="signOut">
-    <input type="submit" value="выйти" class="floating-button"/>
-</form>
 </body>
 <style>
+h1{
+    display:flex;
+    justify-content:center;
+    margin-top:0
+}
+
 body{
      background-image: url(https://img4.goodfon.ru/wallpaper/nbig/c/81/pitstsy-testo-syr-makarony.jpg);
      background-repeat: no-repeat;
      background-attachment: fixed;
      background-size: 130%;
 }
+
 
 .select {
   position: relative;
@@ -116,8 +101,6 @@ body{
 .select select:disabled ~ .select__arrow {
   border-top-color: #ccc;
 }
-
-
 
 
 .control {
@@ -241,7 +224,7 @@ body{
   border: none;
   padding-left: 20px;
   padding-right: 20px;
-  margin-top:15px;
+  margin-top:10px;
   line-height: 35px;
   border-radius: 45px;
   font-family: 'Montserrat', sans-serif;
@@ -288,32 +271,41 @@ body{
 }
 
 
+
+
+a{
+    color: #000;
+    text-decoration: none;
+}
 .signOut{
     position:absolute;
     right:10px;
     top:10px;
     z-index:999;
 }
-a{
-    color: #000;
-    text-decoration: none;
+.signOut1{
+    position:absolute;
+    right:10px;
+    top:55px;
+    z-index:999;
 }
 .zakaz{
     margin-right:10px;
 }
 .yellowFonZakaz{
-    display:flex;
+border-radius:20px;
     background-color:yellow;
-    margin-top:100px;
+    margin-top:125px;
     margin-left:50px;
     margin-right:50px;
     padding-bottom:100px;
+    padding-left:25px;
 }
 body{
     margin:0;
 }
 #yellowFon{
-border-radius:45px;
+    border-radius:45px;
     background-color:yellow;
     margin-top:25px;
     padding-left:25px;
