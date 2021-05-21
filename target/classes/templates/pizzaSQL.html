@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Buenos pizza</title>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
 <body>
 <div class="center">
     <div id="yellowFon">
@@ -23,9 +24,7 @@
             </div>
             <div class="select">
                 <select name="pizzaType">
-                    <option>пицца корбанара</option>
-                    <option>пицца пеперони</option>
-                    <option>пицца цезарь</option>
+                    <option th:each="piz1:${pizza}" th:text="${piz1.getName()}"></option>
                 </select>
                 <div class="select__arrow"></div>
             </div>
@@ -46,6 +45,7 @@
                 </label>
             </div>
             <input type="submit" value="заказать" class="floating-button">
+            <button class="floating-button" formaction="/catalog" formmethod="post">каталог пицц</button>
         </form>
     </div>
 </div>
@@ -69,8 +69,9 @@
                     <span th:if="${zakaz1.getSize()}==3">большой</span></td>
                 <td><button th:value="${zakaz1.ID}" name="id" class="floating-button1">удалить</button></td>
                 <td><button th:value="${zakaz1.ID}" formaction="/obrBlogEditing" name="as" class="floating-button1">редактировать</button></td>
-                <td><div th:if="${zakaz1.getReady}"><button class="floating-button1 green"><a href="/blog" >готово</a></button><button formmethod="get" formaction="/blog" class="floating-button1">оплатить</button></div>
-                    <button th:if="${zakaz1.getReady}==false" class="floating-button1 red">неготово</button></td>
+                <td>
+        <button formmethod="post" formaction="/Pay" th:value="${zakaz1.ID}" th:if="${zakaz1.getReady}" class="floating-button1 green" name="ID">готово-оплатить</button>
+        <button class="floating-button1 red" th:if="${zakaz1.getReady}==false"><a href="/blog">неготово</a></button></td>
             </tr>
         </table>
     </form>
@@ -79,9 +80,18 @@
     </form>
     <a href="/personalArea" class="floating-button signOut1">личный кабинет</a>
     <a th:if="${UFDB}" href="/zakaz" class="floating-button signOut2">заказы ожидающие приготовления</a>
+    <a th:if="${Adm}" href="/AdminPanel" class="floating-button signOut2">обновить каталог пицц</a>
 </div>
 </body>
 <style>
+.floating-button1 a{
+    color:white;
+    display:block;
+    height: 100%;
+}
+td{
+    margin-right:5px;
+}
 .floating-button1.red {
      background-color: #FF3300;
      color:white;
@@ -101,6 +111,7 @@ body{
      background-repeat: no-repeat;
      background-attachment: fixed;
      background-size: 130%;
+     font-family: 'PT Serif', serif;
 }
 
 
@@ -351,6 +362,12 @@ a{
     position:absolute;
     left:10px;
     top:55px;
+    z-index:999;
+}
+.signOut3{
+    position:absolute;
+    left:10px;
+    top:100px;
     z-index:999;
 }
 .zakaz{

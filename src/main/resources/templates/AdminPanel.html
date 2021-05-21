@@ -5,66 +5,97 @@
 <head>
     <meta charset="UTF-8">
     <title>Buenos pizza</title>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
 <body>
 <div class="center">
-    <div id="yellowFon">
-        <h1 class="center">Редактировать</h1>
-        <form id="vertical" method="post" action="/blogEditing" novalidate>
-            <div>
-                <div class="form-row">
-                    <input id="name" type="text" name="name" th:value="${zakazs.get(number).name}" required><label for="name">Имя</label>
-                </div>
-                <div class="form-row">
-                    <input id="surname" class="inp" type="text" name="surname" th:value="${zakazs.get(number).surname}" required><label for="surname">Фамилия</label>
-                </div>
-                <div class="form-row form1">
-                    <input id="patronymic" class="inp inp1" type="text" name="patronymic" th:value="${zakazs.get(number).patronymic}" required><label for="patronymic">Отчество</label>
-                </div>
-            </div>
+<div id="yellowFon">
 
-            <div class="select">
-                <select name="pizzaType">
-                    <option th:each="piz1:${pizza}" th:text="${piz1.getName()}"></option>
-                </select>
-                <div class="select__arrow"></div>
+    <h1 class="center">Пополнение Каталога</h1>
+<!--    novalidate-->
+    <form id="vertical" th:action="@{/AdminPanelPost}" method="post">
+        <div>
+            <div class="form-row">
+                <input id="name" type="text" name="name" required autocomplete="off"><label for="name">Имя пиццы</label>
             </div>
-            <div class="select">
-                <select name="Size">
-                    <option value="1">маленькая</option>
-                    <option value="2">средняя</option>
-                    <option value="3">большая</option>
-                </select>
-                <div class="select__arrow"></div>
+            <div class="form-row">
+                <input id="surname" class="inp" type="text" name="Sostav" required autocomplete="off"><label for="surname">Состав</label>
             </div>
-            <div id="gorizont">
-                <label class="control control--checkbox">Острая
-                    <input type="checkbox" name="isAcute" th:checked="${acut}"/>
-                    <div class="control__indicator"></div>
-                </label>
+            <div class="form-row">
+                <input id="patronymic" class="inp inp1" type="text" name="URL" required autocomplete="off"><label for="patronymic">Ссылка на картинку</label>
             </div>
-            <input type="submit" value="редактировать" class="floating-button">
-            <button class="floating-button"><a href="/blog">на главную</a></button>
-        </form>
+            <div class="form-row form1">
+                <input id="price" class="inp inp1" type="number" name="price" required autocomplete="off"><label for="price">Цена</label>
+            </div>
+        </div>
+        <input type="submit" value="создать" class="floating-button">
+    </form>
+</div>
+</div>
+<div class="yellowFonZakaz">
+    <div class="center">
+        <div class="pizza" th:each="piz1 : ${pizza}">
+            <form action="/pizzaDelite" method="post">
+                <img th:src="${piz1.getImg()}">
+                <h1 class="Name" th:text="${piz1.getName()}"></h1>
+                <p class="Sostav" th:text="${piz1.getSostav()}"></p>
+                <button th:value="${piz1.getID()}" name="ID" class="floating-button2">удалить</button>
+                <button th:value="${piz1.getID()}" class="floating-button3" th:formaction="@{/pizzaEditing}" formmethod="post" name="id">редактировать</button>
+            </form>
+        </div>
     </div>
 </div>
 <form th:action="@{/logout}" method="post" class="signOut">
     <input type="submit" value="выйти" class="floating-button"/>
 </form>
+<a href="/blog" class="signOut1 floating-button">назад</a>
 </body>
 <style>
-.floating-button a{
-    display:block;
-    height: 100%;
+input[type='number'] {
+    -moz-appearance:textfield;
 }
-.floating-button a:hover{
-    color:white;
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
 }
+
+
+.center{
+    display:flex;
+    margin-left:auto;
+    margin-right:auto;
+    flex-wrap:wrap;
+}
+.pizza{
+    width:290px;
+    margin-right:7px;
+    margin-top:5px;
+    position:relative;
+    padding-bottom:40px;
+    margin-bottom:15px;
+
+}
+.Name{
+    margin:0;
+    margin-left:10px;
+    font-family: 'PT Serif', serif;
+    font-style:italic;
+}
+.Sostav{
+    margin:0;
+    margin-top:5px;
+    margin-left:10px;
+    margin-bottom:10px;
+    font-family: 'PT Serif', serif;
+}
+
 body{
      background-image: url(https://img4.goodfon.ru/wallpaper/nbig/c/81/pitstsy-testo-syr-makarony.jpg);
      background-repeat: no-repeat;
      background-attachment: fixed;
      background-size: 130%;
 }
+
 
 .select {
   position: relative;
@@ -121,8 +152,6 @@ body{
 .select select:disabled ~ .select__arrow {
   border-top-color: #ccc;
 }
-
-
 
 
 .control {
@@ -246,7 +275,7 @@ body{
   border: none;
   padding-left: 20px;
   padding-right: 20px;
-  margin-top:15px;
+  margin-top:10px;
   line-height: 35px;
   border-radius: 45px;
   font-family: 'Montserrat', sans-serif;
@@ -292,33 +321,110 @@ body{
   transform: translateY(-5px);
 }
 
+.floating-button2 {
+  border: none;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top:10px;
+  line-height: 35px;
+  border-radius: 45px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 3px;
+  color: #524f4e;
+  font-weight: 600;
+  background: white;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+  transition: .3s;
+  position:absolute;
+  bottom:10px;
+  left:5px;
+}
+.floating-button2:hover {
+  background: #2EE59D;
+  box-shadow: 0 15px 20px rgba(46, 229, 157, .4);
+  color: white;
+  transform: translateY(-5px);
+}
 
+.floating-button3 {
+  border: none;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top:10px;
+  line-height: 35px;
+  border-radius: 45px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 3px;
+  color: #524f4e;
+  font-weight: 600;
+  background: white;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+  transition: .3s;
+  position:absolute;
+  bottom:10px;
+  right:5px;
+}
+.floating-button3:hover {
+  background: #2EE59D;
+  box-shadow: 0 15px 20px rgba(46, 229, 157, .4);
+  color: white;
+  transform: translateY(-5px);
+}
+
+
+a{
+    color: #000;
+    text-decoration: none;
+}
 .signOut{
     position:absolute;
     right:10px;
     top:10px;
     z-index:999;
 }
-a{
-    color: #000;
-    text-decoration: none;
+.signOut1{
+    position:absolute;
+    left:10px;
+    top:10px;
+    z-index:999;
+}
+.signOut2{
+    position:absolute;
+    left:10px;
+    top:55px;
+    z-index:999;
 }
 .zakaz{
     margin-right:10px;
 }
 .yellowFonZakaz{
-    display:flex;
+display:flex;
+flex-wrap:wrap;
+border-radius:20px;
     background-color:yellow;
     margin-top:100px;
-    margin-left:50px;
-    margin-right:50px;
+    margin-left:25px;
+    margin-right:25px;
     padding-bottom:100px;
+    padding-left:9px;
+    padding-top:10px;
+    padding-right:7px;
+}
+img{
+    width:290px;
+    border-radius:50px;
 }
 body{
     margin:0;
 }
 #yellowFon{
-border-radius:45px;
+    border-radius:45px;
     background-color:yellow;
     margin-top:25px;
     padding-left:25px;

@@ -56,12 +56,19 @@ public class Registrations {
                 return "registrationWorker";
             }
         }
+        if (code.equals("Admin")){
+            model.addAttribute("message", "");
+            user.setActive(true);
+            user.setRoles(Collections.singleton(Role.Admin));
+            user.setPassword(password);
+            user.setUserName(username);
+            userRepository.save(user);
+            return "redirect:/login";
+        }
         if (!code.equals("ad123dd")){
             model.addAttribute("message", "неправельный код");
-            System.out.println("asd");
             return "registrationWorker";
         }
-        System.out.println("aa");
         model.addAttribute("message", "");
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.Worker));

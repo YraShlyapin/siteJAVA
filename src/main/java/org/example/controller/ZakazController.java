@@ -1,8 +1,10 @@
 package org.example.controller;
 
+import org.example.models.Pizza;
 import org.example.models.Post;
 import org.example.models.Role;
 import org.example.models.User;
+import org.example.repo.PizzaRepo;
 import org.example.repo.PostRepository;
 import org.example.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +22,17 @@ import java.util.ArrayList;
 @Controller
 public class ZakazController{
 
+    //TODO доделать каталог пиццы, карзину, личный кабинет, красивый шрифт
+
+    //TODO завтра в 17:00 начать работу Выпрями спину
+
+
     @Autowired
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PizzaRepo pizzaRepo;
 
     ArrayList<Post> filterPosts = new ArrayList<>();
     ArrayList<Post> filterPosts1 = new ArrayList<>();
@@ -31,7 +40,37 @@ public class ZakazController{
     ArrayList<Post> filterPosts3 = new ArrayList<>();
     ArrayList<Post> filterPosts4 = new ArrayList<>();
 
-    int number = 0;
+    Long number;
+
+
+    @GetMapping("/Pay")
+    public String Pay(Model model){
+        Iterable<Post> posts = postRepository.findAll();
+        model.addAttribute("massage","ads");
+        for (Post p:posts){
+            if (p.getID().equals(number)){
+                model.addAttribute("massage","с вашей карты счислится "+p.getPrice()+"р");
+            }
+        }
+        return "Pay";
+    }
+
+    @PostMapping("/Pay")
+    public String PayPost(@RequestParam Long ID){
+        number=ID;
+        return "redirect:/Pay";
+    }
+
+
+    @GetMapping("/catalog")
+    public String catalog(Model model){
+        model.addAttribute("pizza",pizzaRepo.findAll());
+        return "catalog";
+    }
+    @PostMapping("/catalog")
+    public String catalogPost(){
+        return "redirect:/catalog";
+    }
 
     @GetMapping("/personalArea")
     public String personalArea(){
@@ -49,13 +88,19 @@ public class ZakazController{
                 posts1.add(p);
             }
         }
-        Boolean UFDB = false;
+        boolean UFDB = false;
+        boolean Admin = false;
         for (Role r:userFromDB.getRoles()){
             if (r==Role.Worker){
                 UFDB = true;
             }
+            if (r==Role.Admin){
+                Admin = true;
+            }
         }
         model.addAttribute("UFDB",UFDB);
+        model.addAttribute("Adm",Admin);
+        model.addAttribute("pizza",pizzaRepo.findAll());
         model.addAttribute("posts",posts1);
         return "pizzaSQL";
     }
@@ -75,21 +120,19 @@ public class ZakazController{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User userFromDB = userRepository.findByUsername(authentication.getName());
         int price=0;
-        switch (pizzaType){
-            case "пицца пеперони":
-                price+=200;
-                break;
-            case "пицца корбанара":
-                price+=300;
-                break;
-            case "пицца цезарь":
-                price+=250;
-                break;
+        for (Pizza p:pizzaRepo.findAll()){
+            if (p.getName().equals(pizzaType)){
+                price=p.getPrice();
+            }
         }
         if (isAcute){
             price+=20;
         }
-        price*=Size;
+        if (Size==2){
+            price*=1.5;
+        }else if (Size==3){
+            price*=2;
+        }
         Post post = new Post(name,surname,patronymic,pizzaType,isAcutes,userFromDB.getId(),price,Size,false);
         postRepository.save(post);
         return "redirect:/blog";
@@ -121,6 +164,7 @@ public class ZakazController{
         model.addAttribute("zakaz2",filterPosts2);
         model.addAttribute("zakaz3",filterPosts3);
         model.addAttribute("zakaz4",filterPosts4);
+        model.addAttribute("pizza",pizzaRepo.findAll());
         return "blogFilterht";
     }
     @PostMapping("/blogFilter")
@@ -181,19 +225,18 @@ public class ZakazController{
         Iterable<Post> posts = postRepository.findAll();
         ArrayList<Post> posts1 = (ArrayList<Post>)postRepository.findAll();
         model.addAttribute("zakazs",posts);
-
+        model.addAttribute("pizza",pizzaRepo.findAll());
         String acut = "";
         int count=0;
         for (Post p:posts){
-            if (p.getID()==number){
+            if (p.getID().equals(number)){
+                if (posts1.get(count).getIsAcute().equals("острая")){
+                    acut="checked";
+                }else {
+                    acut="false";
+                }
                 break;
             }
-            count++;
-        }
-        if (posts1.get(count).getIsAcute().equals("острая")){
-            acut="checked";
-        }else {
-            acut="false";
         }
         //TODO доделать PyzzaType
         model.addAttribute("number",count);
@@ -203,7 +246,7 @@ public class ZakazController{
 
     @PostMapping("/obrBlogEditing")
     public String obrBlogEditing(@RequestParam String as){
-        number=Integer.parseInt(as);
+        number=Long.parseLong(as);
         return "redirect:/blogEditing";
     }
 
@@ -223,21 +266,19 @@ public class ZakazController{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User userFromDB = userRepository.findByUsername(authentication.getName());
         int price=0;
-        switch (pizzaType){
-            case "пицца пеперони":
-                price+=200;
-                break;
-            case "пицца корбанара":
-                price+=300;
-                break;
-            case "пицца цезарь":
-                price+=250;
-                break;
+        for (Pizza p:pizzaRepo.findAll()){
+            if (p.getName().equals(pizzaType)){
+                price=p.getPrice();
+            }
         }
         if (isAcute){
             price+=20;
         }
-        price*=Size;
+        if (Size==2){
+            price*=1.5;
+        }else if (Size==3){
+            price*=2;
+        }
         Post post = new Post(name,surname,patronymic,pizzaType,acut,userFromDB.getId(),price,Size,false);
         Iterable<Post> posts = postRepository.findAll();
         ArrayList<Post> posts1 = new ArrayList<>();

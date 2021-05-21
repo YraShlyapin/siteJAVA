@@ -24,9 +24,7 @@
 
             <div class="select">
                 <select name="pizzaType">
-                    <option>пицца корбанара</option>
-                    <option>пицца пеперони</option>
-                    <option>пицца цезарь</option>
+                    <option th:each="piz1:${pizza}" th:text="${piz1.getName()}"></option>
                 </select>
                 <div class="select__arrow"></div>
             </div>
@@ -45,7 +43,7 @@
                 </label>
             </div>
             <input type="submit" value="редактировать" class="floating-button">
-            <button class="floating-button" formaction="/blog" formmethod="get">на главную</button>
+            <button class="floating-button"><a href="/blog">на главную</a></button>
         </form>
     </div>
 </div>
@@ -54,6 +52,13 @@
 </form>
 </body>
 <style>
+.floating-button a{
+    display:block;
+    height: 100%;
+}
+.floating-button a:hover{
+    color:white;
+}
 body{
      background-image: url(https://img4.goodfon.ru/wallpaper/nbig/c/81/pitstsy-testo-syr-makarony.jpg);
      background-repeat: no-repeat;
